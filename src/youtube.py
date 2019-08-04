@@ -59,6 +59,8 @@ class Youtube(VideoDaemon):
                 else:
                     logger.info(f'{self.target_id}: Not found Live')
                 await asyncio.sleep(config['sec'])
+            except asyncio.CancelledError:
+                raise asyncio.CancelledError
             except Exception:
                 logger.exception('Check Failed')
 
@@ -95,10 +97,12 @@ class YoutubeTemp(Youtube):
 
 async def start_temp():
     db = Database('Queues')
+    logger = logging.getLogger('run.youtube_temp')
     while True:
         temp_tasks = []
         for video in await db.select():
             y = YoutubeTemp(video)
             temp_tasks.append(y.check())
         await asyncio.gather(*temp_tasks)
+        logger.info('Finished a check')
         await asyncio.sleep(config['sec'])

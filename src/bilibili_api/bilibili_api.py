@@ -16,4 +16,4 @@ class BilibiliAPI:
         title = video['title']
         ref = f"https://www.bilibili.com/video/av{video['aid']}"
         return {'Title': title,
-                'Ref': ref}
+                'Target': ref}
