@@ -58,14 +58,14 @@ def get_logger():
 
 class Database:
     def __init__(self, db: str):
-        client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://localhost:27701')
+        client = motor.motor_asyncio.AsyncIOMotorClient('mongodb://127.0.0.1:27017')
         _db = client["Video"]
         self.db = _db[db]
         self.logger = logging.getLogger('run.db')
 
     async def select(self):
         cursor = self.db.find({})
-        return await cursor.to_list()
+        return await cursor.to_list(None)
 
     async def delete(self, _id):
         result = await self.db.remove({'_id': ObjectId(_id)})
