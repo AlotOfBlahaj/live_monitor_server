@@ -55,7 +55,7 @@ class Youtube(VideoDaemon):
                 if video_dict['Is_live']:
                     video_dict['Provide'] = self.module
                     video_dict['User'] = self.user_config['name']
-                    self.set_live(video_dict)
+                    self.send_to_sub(video_dict)
                 else:
                     logger.info(f'{self.target_id}: Not found Live')
                 await asyncio.sleep(config['sec'])
@@ -89,7 +89,7 @@ class YoutubeTemp(Youtube):
         if video_dict['Is_live']:
             video_dict['Provide'] = self.module
             video_dict['User'] = self.user_config['name']
-            self.set_live(video_dict)
+            self.send_to_sub(video_dict)
             await self.db.delete(_id)
         else:
             logger.info(f'Not found Live')
