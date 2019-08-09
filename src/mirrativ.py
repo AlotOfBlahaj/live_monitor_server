@@ -40,12 +40,15 @@ class Mirrativ(VideoDaemon):
 
     async def check(self):
         while True:
-            is_live = await self.get_live_info()
-            if is_live:
-                video_dict = await self.get_hsl(is_live)
-                video_dict['Provide'] = self.module
-                video_dict['User'] = self.user_config['name']
-                self.set_live(video_dict)
-            else:
-                self.logger.info(f'{self.target_id}: Not found Live')
-            await asyncio.sleep(config['sec'])
+            try:
+                is_live = await self.get_live_info()
+                if is_live:
+                    video_dict = await self.get_hsl(is_live)
+                    video_dict['Provide'] = self.module
+                    video_dict['User'] = self.user_config['name']
+                    self.send_to_sub(video_dict)
+                else:
+                    self.logger.info(f'{self.target_id}: Not found Live')
+                await asyncio.sleep(config['sec'])
+            except Exception:
+                self.logger.Exception('Check failed')

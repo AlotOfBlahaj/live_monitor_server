@@ -6,7 +6,7 @@ from mirrativ import Mirrativ
 from openrec import Openrec
 from tools import get_logger
 from twitcasting import Twitcasting
-from youtube import Youtube
+from youtube import Youtube, start_temp
 
 logger = get_logger()
 
@@ -39,6 +39,8 @@ def gen_process() -> list:
 def create_tasks():
     event_list = gen_process()
     tasks = [event.check() for event in event_list]
+    if config['youtube']['enable_temp']:
+        tasks.append(start_temp())
     return tasks
 
 

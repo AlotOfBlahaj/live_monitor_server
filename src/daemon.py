@@ -1,6 +1,9 @@
+import logging
 from abc import ABCMeta, abstractmethod
 
 from pub import Publisher
+
+logger = logging.getLogger('run.daemon')
 
 
 class VideoDaemon(metaclass=ABCMeta):
@@ -21,7 +24,20 @@ class VideoDaemon(metaclass=ABCMeta):
     def check(self):
         pass
 
-    def set_live(self, video_dict: dict) -> None:
-        if not video_dict == self.current_live:
-            self.current_live = video_dict
+    def send_to_sub(self, video_dict: dict) -> None:
+        if not video_dict['Target'] == self.current_live:
+            self.current_live = video_dict['Target']
+            logger.info(f'Find a live {video_dict}')
+            video_dict = self.msg_fml(video_dict)
             self.pub.do_publish(video_dict)
+        else:
+            logger.info(f'drop the same live {video_dict}')
+
+    @staticmethod
+    def msg_fml(video_dict: dict) -> dict:
+        if video_dict['Provide'] in ['Youtube', 'Twitcasting', 'Mirrativ', 'Openrec']:
+            video_dict[
+                'Msg'] = f"[直播提示] {video_dict['Provide']} {video_dict.get('Title')} 正在直播 链接: {video_dict['Target']} [CQ:at,qq=all]"
+        elif video_dict['Provide'] == 'Bilibili':
+            video_dict['Msg'] = f'[Bilibili] {video_dict.get("Title")} 链接: {video_dict.get("Target")}'
+        return video_dict
