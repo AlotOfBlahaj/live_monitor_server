@@ -33,8 +33,9 @@ class VideoDaemon(metaclass=ABCMeta):
         else:
             logger.info(f'drop the same live {video_dict}')
 
-    def msg_fml(self, video_dict: dict) -> dict:
-        if video_dict['Provide'] == 'Youtube' == 'Twitcasting' == 'Mirrativ' == 'Openrec':
+    @staticmethod
+    def msg_fml(video_dict: dict) -> dict:
+        if video_dict['Provide'] in ['Youtube', 'Twitcasting', 'Mirrativ', 'Openrec']:
             video_dict[
                 'Msg'] = f"[直播提示] {video_dict['Provide']} {video_dict.get('Title')} 正在直播 链接: {video_dict['Target']} [CQ:at,qq=all]"
         elif video_dict['Provide'] == 'Bilibili':
