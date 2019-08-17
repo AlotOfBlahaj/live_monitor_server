@@ -17,7 +17,8 @@ class BilibiliAPI:
         return {'Title': title,
                 'Target': ref}
 
-    async def get_num_json(self, mid: int) -> dict:
+    @staticmethod
+    async def get_num_json(mid: int) -> dict:
         nav_info = await get_json(f'https://api.bilibili.com/x/space/navnum?mid={mid}&jsonp=jsonp')
         return nav_info['data']
 
