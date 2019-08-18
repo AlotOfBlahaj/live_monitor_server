@@ -67,9 +67,10 @@ class Youtube(VideoDaemon):
 
 class YoutubeTemp(Youtube):
     def __init__(self, vinfo):
-        super().__init__(None)
+        super().__init__(config['youtube']['users'][0])
         self.vinfo = vinfo
         self.db = Database('Queues')
+        self.logger = logging.getLogger('run.youtube.temp')
 
     @staticmethod
     def get_temp_vid(vlink):
@@ -92,12 +93,12 @@ class YoutubeTemp(Youtube):
             self.send_to_sub(video_dict)
             await self.db.delete(_id)
         else:
-            logger.info(f'Not found Live')
+            logger.info(f'{self.vinfo}Not found Live')
 
 
 async def start_temp():
     db = Database('Queues')
-    logger = logging.getLogger('run.youtube_temp')
+    logger = logging.getLogger('run.youtube.temp')
     while True:
         temp_tasks = []
         for video in await db.select():
