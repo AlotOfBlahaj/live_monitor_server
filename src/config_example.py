@@ -50,8 +50,9 @@ config = {
         'users': [
             {
                 'target_id': '336731767',
-                'name': 'natsuiromatsuri'
-            }
+                'live': True,
+                'article': False
+            },
         ]
     }
 }

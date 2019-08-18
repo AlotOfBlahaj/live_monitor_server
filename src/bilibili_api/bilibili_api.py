@@ -35,3 +35,13 @@ class BilibiliAPI:
         target = f'https://www.bilibili.com/read/cv{article["id"]}'
         return {'Title': title,
                 'Target': target}
+
+    @staticmethod
+    async def get_live_status(mid: int) -> dict:
+        live_json = await get_json(f'https://api.live.bilibili.com/room/v1/Room/getRoomInfoOld?mid={mid}')
+        is_live = live_json['data']['liveStatus']
+        title = live_json['data']['title']
+        url = live_json['data']['url']
+        return {'Title': title,
+                'Is_live': is_live,
+                'Target': url}

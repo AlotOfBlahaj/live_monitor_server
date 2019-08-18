@@ -1,6 +1,6 @@
 import asyncio
 
-from bilibili import Bilibili, BilibiliArticle
+from bilibili import Bilibili, BilibiliArticle, BilibiliLive
 from config import config
 from mirrativ import Mirrativ
 from openrec import Openrec
@@ -32,9 +32,13 @@ def gen_process() -> list:
     if config['bilibili']['enable']:
         for user_config in config['bilibili']['users']:
             b = Bilibili(user_config)
-            b1 = BilibiliArticle(user_config)
             event_list.append(b)
-            event_list.append(b1)
+            if user_config['article']:
+                b1 = BilibiliArticle(user_config)
+                event_list.append(b1)
+            if user_config['live']:
+                b2 = BilibiliLive(user_config)
+                event_list.append(b2)
     return event_list
 
 

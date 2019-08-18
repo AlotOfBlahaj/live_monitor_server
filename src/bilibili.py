@@ -25,7 +25,7 @@ class Bilibili(VideoDaemon):
                     video_info = await self.API.get_video(self.target_id)
                     video_info['User'] = 'bilibili'
                     video_info['Provide'] = 'Bilibili'
-                    self.send_to_sub(video_info)
+                    self.send_to_sub(video_info, False)
                     self.old_video_num = video_num
                 else:
                     self.logger.info(f'{self.target_id}:{video_num} Not found new videos')
@@ -52,9 +52,31 @@ class BilibiliArticle(VideoDaemon):
                     article_info = await self.API.get_article(self.target_id)
                     article_info['User'] = 'bilibili'
                     article_info['Provide'] = 'Bilibili'
-                    self.send_to_sub(article_info)
+                    self.send_to_sub(article_info, False)
+                    self.old_article_num = article_num
                 else:
                     self.logger.info(f'{self.target_id}:{article_num} Not found new videos')
                 await asyncio.sleep(config['sec'])
         except Exception:
             self.logger.exception('Check failed')
+
+
+class BilibiliLive(VideoDaemon):
+    def __init__(self, user_config):
+        super(BilibiliLive, self).__init__(user_config)
+        self.API = BilibiliAPI()
+        self.logger = logging.getLogger('run.bilibili.live')
+
+    async def check(self):
+        while True:
+            try:
+                live_dict = await self.API.get_live_status(self.target_id)
+                if live_dict.get('Is_live'):
+                    live_dict['User'] = 'bilibili'
+                    live_dict['Provide'] = 'Bilibili'
+                    self.send_to_sub(live_dict, True)
+                else:
+                    self.logger.info(f'{self.target_id} Not found live')
+                    await asyncio.sleep(config['sec'])
+            except Exception:
+                self.logger.exception('Check failed')
