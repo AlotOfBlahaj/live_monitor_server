@@ -51,4 +51,4 @@ class Mirrativ(VideoDaemon):
                     self.logger.info(f'{self.target_id}: Not found Live')
                 await asyncio.sleep(config['sec'])
             except Exception:
-                self.logger.Exception('Check failed')
+                self.logger.exception('Check failed')

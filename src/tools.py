@@ -68,4 +68,4 @@ class Database:
         return await cursor.to_list(None)
 
     async def delete(self, _id):
-        result = await self.db.remove({'_id': ObjectId(_id)})
+        result = await self.db.delete_many({'_id': ObjectId(_id)})

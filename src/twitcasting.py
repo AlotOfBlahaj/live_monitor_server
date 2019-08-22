@@ -16,7 +16,10 @@ class Twitcasting(VideoDaemon):
     async def live_info(self):
         live_js = await get_json(
             f"https://twitcasting.tv/streamserver.php?target={self.target_id}&mode=client")
-        is_live = live_js['movie']['live']
+        try:
+            is_live = live_js['movie']['live']
+        except KeyError:
+            return {'Is_live': False}
         vid = str(live_js['movie']['id'])
         live_info = {"Is_live": is_live,
                      "Vid": vid}
