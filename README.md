@@ -22,6 +22,30 @@
 
 - 通过redis中间件实现C/S交互
 
+## 部署环境需求
+
+- redis
+
+建议使用docker一键部署docker
+
+
+## 使用方法
+
+    git clone https://github.com/fzxiao233/live_monitor_server  #克隆本项目
+
+    cd live_monitor_worker  #进入项目目录
+
+    编辑src目录下的config.py文件
+
+    pip install -r requirements.txt  #安装依赖
+
+    python run.py  #启动程序
+
+    ## 推荐使用pm2执行，此次不再介绍
+
+
+
+
 ## 配置文件示例
 
 ```python
