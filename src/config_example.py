@@ -1,4 +1,6 @@
 config = {
+    'redis_host': '127.0.0.1',
+    'redis_port': 6379,
     'enable_proxy': False,
     'proxy': '127.0.0.1:12333',
     'sec': 15,

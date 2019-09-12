@@ -2,7 +2,9 @@ import json
 
 import redis
 
-pool = redis.ConnectionPool(host='127.0.0.1', port=6379)
+from config import config
+
+pool = redis.ConnectionPool(host=config['redis_host'], port=config['redis_port'])
 
 
 class Publisher:
