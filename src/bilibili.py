@@ -72,7 +72,7 @@ class BilibiliLive(VideoDaemon):
             try:
                 live_dict = await self.API.get_live_status(self.target_id)
                 if live_dict.get('Is_live'):
-                    live_dict['User'] = 'bilibili'
+                    live_dict['User'] = self.user_config['name']
                     live_dict['Provide'] = 'Bilibili'
                     self.send_to_sub(live_dict, True)
                 else:
