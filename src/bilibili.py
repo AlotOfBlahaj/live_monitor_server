@@ -21,9 +21,12 @@ class Bilibili(VideoDaemon):
                 video_num = await self.API.get_video_num(self.target_id)
                 if video_num > self.old_video_num:
                     self.logger.info('Found A new video')
-                    await asyncio.sleep(10)  # 需要增加延迟，反正B站API未即时更新，防止返回上一个视频
+                    await asyncio.sleep(10)  # 需要增加延迟，防止B站API未即时更新，防止返回上一个视频
                     video_info = await self.API.get_video(self.target_id)
-                    video_info['User'] = 'bilibili'
+                    if 'name' in self.user_config:
+                        video_info['User'] = self.user_config['name']
+                    else:
+                        video_info['User'] = 'bilibili'
                     video_info['Provide'] = 'Bilibili'
                     self.send_to_sub(video_info, False)
                     self.old_video_num = video_num
