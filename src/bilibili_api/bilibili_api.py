@@ -1,3 +1,5 @@
+import time
+
 from tools import get_json
 
 
@@ -14,8 +16,10 @@ class BilibiliAPI:
         video = video_info['data']['vlist'][0]
         title = video['title']
         ref = f"https://www.bilibili.com/video/av{video['aid']}"
+        date = time.strftime("%Y-%m-%d", time.localtime())
         return {'Title': title,
-                'Target': ref}
+                'Target': ref,
+                'Date': date}
 
     @staticmethod
     async def get_num_json(mid: int) -> dict:
