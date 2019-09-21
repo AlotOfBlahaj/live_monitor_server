@@ -16,12 +16,13 @@ class VideoDaemon(metaclass=ABCMeta):
         self.pub = Publisher()
 
     async def run(self) -> None:
-        try:
-            await self.check()
-        except asyncio.CancelledError:
-            raise asyncio.CancelledError
-        except Exception:
-            logger.exception('Check Failed')
+        while True:
+            try:
+                await self.check()
+            except asyncio.CancelledError:
+                raise asyncio.CancelledError
+            except Exception:
+                logger.exception('Check Failed')
 
     @abstractmethod
     def check(self):
