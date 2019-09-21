@@ -46,7 +46,7 @@ class Youtube(VideoDaemon):
                     'Is_live': is_live}
         except KeyError:
             logger.exception('Get keys error')
-            return False
+            return {'Is_live': False}
 
     async def check(self):
         while True:
