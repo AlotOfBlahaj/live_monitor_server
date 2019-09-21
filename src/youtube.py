@@ -50,19 +50,14 @@ class Youtube(VideoDaemon):
 
     async def check(self):
         while True:
-            try:
-                video_dict = await self.get_video_info_by_html(f'https://www.youtube.com/channel/{self.target_id}/live')
-                if video_dict['Is_live']:
-                    video_dict['Provide'] = self.module
-                    video_dict['User'] = self.user_config['name']
-                    self.send_to_sub(video_dict)
-                else:
-                    logger.info(f'{self.target_id}: Not found Live')
+            video_dict = await self.get_video_info_by_html(f'https://www.youtube.com/channel/{self.target_id}/live')
+            if video_dict['Is_live']:
+                video_dict['Provide'] = self.module
+                video_dict['User'] = self.user_config['name']
+                self.send_to_sub(video_dict)
+            else:
+                logger.info(f'{self.target_id}: Not found Live')
                 await asyncio.sleep(config['sec'])
-            except asyncio.CancelledError:
-                raise asyncio.CancelledError
-            except Exception:
-                logger.exception('Check Failed')
 
 
 class YoutubeTemp(Youtube):

@@ -37,15 +37,12 @@ class Openrec(VideoDaemon):
 
     async def check(self):
         while True:
-            try:
-                is_live = await self.is_live()
-                if is_live:
-                    video_dict = is_live
-                    video_dict['Provide'] = self.module
-                    video_dict['User'] = self.user_config['name']
-                    self.send_to_sub(video_dict)
-                else:
-                    self.logger.info(f'{self.target_id}: Not found Live')
-                await asyncio.sleep(config['sec'])
-            except Exception:
-                self.logger.Exception('Check failed')
+            is_live = await self.is_live()
+            if is_live:
+                video_dict = is_live
+                video_dict['Provide'] = self.module
+                video_dict['User'] = self.user_config['name']
+                self.send_to_sub(video_dict)
+            else:
+                self.logger.info(f'{self.target_id}: Not found Live')
+            await asyncio.sleep(config['sec'])

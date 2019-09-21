@@ -1,3 +1,4 @@
+import asyncio
 import logging
 from abc import ABCMeta, abstractmethod
 
@@ -14,19 +15,21 @@ class VideoDaemon(metaclass=ABCMeta):
         self.current_live = None
         self.pub = Publisher()
 
-    def run(self) -> None:
+    async def run(self) -> None:
         try:
-            self.check()
-        except KeyboardInterrupt:
-            exit(0)
+            await self.check()
+        except asyncio.CancelledError:
+            raise asyncio.CancelledError
+        except Exception:
+            logger.exception('Check Failed')
 
     @abstractmethod
     def check(self):
         pass
 
     def send_to_sub(self, video_dict: dict, live=True) -> None:
-        if not video_dict['Target'] == self.current_live:
-            self.current_live = video_dict['Target']
+        if not (video_dict['Title'], video_dict['Target']) == self.current_live:
+            self.current_live = (video_dict['Title'], video_dict['Target'])
             logger.info(f'Find a live {video_dict}')
             video_dict = self.msg_fml(video_dict, live)
             self.pub.do_publish(video_dict)
