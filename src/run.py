@@ -44,7 +44,7 @@ def gen_process() -> list:
 
 def create_tasks():
     event_list = gen_process()
-    tasks = [event.check() for event in event_list]
+    tasks = [event.run() for event in event_list]
     if config['youtube']['enable_temp']:
         tasks.append(start_temp())
     return tasks

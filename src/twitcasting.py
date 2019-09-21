@@ -40,15 +40,12 @@ class Twitcasting(VideoDaemon):
 
     async def check(self):
         while True:
-            try:
-                live_info = await self.live_info()
-                if live_info.get('Is_live'):
-                    video_dict = self.get_hsl(live_info)
-                    video_dict['Provide'] = self.module
-                    video_dict['User'] = self.user_config['name']
-                    self.send_to_sub(video_dict)
-                else:
-                    self.logger.info(f'{self.target_id}: Not found Live')
-                await asyncio.sleep(config['sec'])
-            except Exception:
-                self.logger.exception('Check Failed')
+            live_info = await self.live_info()
+            if live_info.get('Is_live'):
+                video_dict = self.get_hsl(live_info)
+                video_dict['Provide'] = self.module
+                video_dict['User'] = self.user_config['name']
+                self.send_to_sub(video_dict)
+            else:
+                self.logger.info(f'{self.target_id}: Not found Live')
+            await asyncio.sleep(config['sec'])
