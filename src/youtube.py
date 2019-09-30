@@ -26,7 +26,11 @@ class Youtube(VideoDaemon):
         """
         video_page = await get(url)
         try:
-            ytplayer_config = json.loads(re.search(r'ytplayer.config\s*=\s*([^\n]+?});', video_page).group(1))
+            _data = re.search(r'ytplayer.config\s*=\s*([^\n]+?});', video_page)
+            if _data is None:
+                return {'Is_live': False}
+            data = _data.group(1)
+            ytplayer_config = json.loads(data)
             player_response = json.loads(ytplayer_config['args']['player_response'])
             video_details = player_response['videoDetails']
             # assert to verity live status

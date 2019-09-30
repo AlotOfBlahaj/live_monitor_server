@@ -65,7 +65,10 @@ class Database:
 
     async def select(self):
         cursor = self.db.find({})
-        return await cursor.to_list(None)
+        try:
+            return await cursor.to_list(None)
+        except Exception:
+            return []
 
     async def delete(self, _id):
         result = await self.db.delete_many({'_id': ObjectId(_id)})
