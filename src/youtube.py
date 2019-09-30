@@ -57,6 +57,7 @@ class Youtube(VideoDaemon):
                 self.send_to_sub(video_dict)
             else:
                 logger.info(f'{self.target_id}: Not found Live')
+                self.set_no_live()
                 await asyncio.sleep(config['sec'])
 
 

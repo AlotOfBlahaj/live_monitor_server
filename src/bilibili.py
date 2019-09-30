@@ -73,4 +73,5 @@ class BilibiliLive(VideoDaemon):
                 self.send_to_sub(live_dict, True)
             else:
                 self.logger.info(f'{self.target_id} Not found live')
+                self.set_no_live()
             await asyncio.sleep(config['sec'])

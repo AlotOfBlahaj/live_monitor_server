@@ -12,7 +12,7 @@ class VideoDaemon(metaclass=ABCMeta):
         super().__init__()
         self.user_config = user_config
         self.target_id = user_config['target_id']
-        self.current_live = None
+        self.current_live = False
         self.pub = Publisher()
 
     async def run(self) -> None:
@@ -29,7 +29,7 @@ class VideoDaemon(metaclass=ABCMeta):
         pass
 
     def send_to_sub(self, video_dict: dict, live=True) -> None:
-        if not (video_dict['Title'], video_dict['Target']) == self.current_live:
+        if self.current_live is False:
             self.current_live = (video_dict['Title'], video_dict['Target'])
             logger.info(f'Find a live {video_dict}')
             video_dict = self.msg_fml(video_dict, live)
@@ -45,3 +45,6 @@ class VideoDaemon(metaclass=ABCMeta):
         else:
             video_dict['Msg'] = f'[{video_dict["Provide"]}] {video_dict.get("Title")} 链接: {video_dict.get("Target")}'
         return video_dict
+
+    def set_no_live(self):
+        self.current_live = False
