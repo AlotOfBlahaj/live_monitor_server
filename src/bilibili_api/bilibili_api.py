@@ -48,4 +48,5 @@ class BilibiliAPI:
         url = live_json['data']['url']
         return {'Title': title,
                 'Is_live': is_live,
-                'Target': url}
+                'Target': url,
+                'Mid': mid}
