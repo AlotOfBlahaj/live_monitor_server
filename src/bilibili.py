@@ -31,6 +31,7 @@ class Bilibili(VideoDaemon):
                 self.old_video_num = video_num
             else:
                 self.logger.info(f'{self.target_id}:{video_num} Not found new videos')
+                self.set_no_live()
             await asyncio.sleep(config['sec'])
 
 
@@ -55,6 +56,7 @@ class BilibiliArticle(VideoDaemon):
                 self.old_article_num = article_num
             else:
                 self.logger.info(f'{self.target_id}:{article_num} Not found new videos')
+                self.set_no_live()
             await asyncio.sleep(config['sec'])
 
 
