@@ -29,8 +29,9 @@ class VideoDaemon(metaclass=ABCMeta):
         pass
 
     def send_to_sub(self, video_dict: dict, live=True) -> None:
-        if self.current_live is False:
-            self.current_live = (video_dict['Title'], video_dict['Target'])
+        current_live = (video_dict['Title'], video_dict['Target'])
+        if self.current_live is False or self.current_live != current_live:
+            self.current_live = current_live
             logger.info(f'Find a live {video_dict}')
             video_dict = self.msg_fml(video_dict, live)
             self.pub.do_publish(video_dict)

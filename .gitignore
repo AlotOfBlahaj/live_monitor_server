@@ -125,17 +125,5 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-将删除 .idea/.gitignore
-将删除 .idea/deployment.xml
-将删除 .idea/dictionaries/
-将删除 .idea/inspectionProfiles/
-将删除 .idea/live_monitor_server.iml
-将删除 .idea/misc.xml
-将删除 .idea/modules.xml
-将删除 .idea/mypy.xml
-将删除 .idea/vcs.xml
-将删除 .vscode/
-将删除 Pipfile.lock
-将删除 src/bd.py
-将删除 src/config.py
-将删除 src/pubsub.py
+.idea*
+src/config.py
